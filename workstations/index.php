@@ -50,26 +50,32 @@ $result = $conn->query("SELECT * FROM workstation $searchSql ORDER BY wsID DESC"
             <th>Actions</th>
         </tr>
 
-        <?php while ($row = $result->fetch_assoc()) : ?>
+        <?php if ($result && $result->num_rows > 0) : ?>
+            <?php while ($row = $result->fetch_assoc()) : ?>
 
-        <tr>
-            <td><?= $row['wsID']; ?></td>
-            <td><?= htmlspecialchars($row['wsLabRoom']); ?></td>
-            <td><?= htmlspecialchars($row['wsPCNum']); ?></td>
-            <td><?= htmlspecialchars($row['wsSoftware']); ?></td>
-            <td><?= htmlspecialchars($row['wsStatus']); ?></td>
-            <td>
-                <a href="view.php?id=<?= $row['wsID']; ?>" class="btn btn-view">View</a>
-                <a href="edit.php?id=<?= $row['wsID']; ?>" class="btn btn-edit">Edit</a>
-                <a href="delete.php?id=<?= $row['wsID']; ?>"
-                   class="btn btn-delete"
-                   onclick="return confirm('Are you sure you want to delete this workstation?')">
-                   Delete
-                </a>
-            </td>
-        </tr>
+            <tr>
+                <td><?= $row['wsID']; ?></td>
+                <td><?= htmlspecialchars($row['wsLabRoom']); ?></td>
+                <td><?= htmlspecialchars($row['wsPCNum']); ?></td>
+                <td><?= htmlspecialchars($row['wsSoftware']); ?></td>
+                <td><?= htmlspecialchars($row['wsStatus']); ?></td>
+                <td>
+                    <a href="view.php?id=<?= $row['wsID']; ?>" class="btn btn-view">View</a>
+                    <a href="edit.php?id=<?= $row['wsID']; ?>" class="btn btn-edit">Edit</a>
+                    <a href="delete.php?id=<?= $row['wsID']; ?>"
+                       class="btn btn-delete"
+                       onclick="return confirm('Are you sure you want to delete this workstation?')">
+                       Delete
+                    </a>
+                </td>
+            </tr>
 
-        <?php endwhile; ?>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="6" class="no-results">No workstations match your search.</td>
+            </tr>
+        <?php endif; ?>
 
     </table>
 

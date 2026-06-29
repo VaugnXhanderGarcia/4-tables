@@ -47,28 +47,32 @@ $result = $conn->query("SELECT * FROM student $searchSql ORDER BY stuID DESC");
             <th>Actions</th>
         </tr>
 
-        <?php while($row = $result->fetch_assoc()) : ?>
+        <?php if ($result && $result->num_rows > 0) : ?>
+            <?php while($row = $result->fetch_assoc()) : ?>
 
-        <tr>
-            <td><?= $row['stuID']; ?></td>
-            <td><?= htmlspecialchars($row['stuFName']); ?></td>
-            <td><?= htmlspecialchars($row['stuLName']); ?></td>
-            <td><?= htmlspecialchars($row['stuCourse']); ?></td>
-            <td><?= htmlspecialchars($row['stuYear']); ?></td>
-            <td>
-                <a href="view.php?id=<?= $row['stuID']; ?>" class="btn btn-view">View</a>
+            <tr>
+                <td><?= $row['stuID']; ?></td>
+                <td><?= htmlspecialchars($row['stuFName']); ?></td>
+                <td><?= htmlspecialchars($row['stuLName']); ?></td>
+                <td><?= htmlspecialchars($row['stuCourse']); ?></td>
+                <td><?= htmlspecialchars($row['stuYear']); ?></td>
+                <td>
+                    <a href="view.php?id=<?= $row['stuID']; ?>" class="btn btn-view">View</a>
+                    <a href="edit.php?id=<?= $row['stuID']; ?>" class="btn btn-edit">Edit</a>
+                    <a href="delete.php?id=<?= $row['stuID']; ?>"
+                       class="btn btn-delete"
+                       onclick="return confirm('Are you sure you want to delete this student?')">
+                       Delete
+                    </a>
+                </td>
+            </tr>
 
-                <a href="edit.php?id=<?= $row['stuID']; ?>" class="btn btn-edit">Edit</a>
-
-                <a href="delete.php?id=<?= $row['stuID']; ?>"
-                   class="btn btn-delete"
-                   onclick="return confirm('Are you sure you want to delete this student?')">
-                   Delete
-                </a>
-            </td>
-        </tr>
-
-        <?php endwhile; ?>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="6" class="no-results">No students match your search.</td>
+            </tr>
+        <?php endif; ?>
 
     </table>
 

@@ -41,7 +41,7 @@ if (isLoggedIn()) {
 
         <button type="submit" class="btn btn-add">Login</button>
     </form>
-    <p style="margin-top: 15px;">Default login: <strong>localadmin</strong> / <strong>Admin123!</strong></p>
+    
 </div>
 </body>
 </html>

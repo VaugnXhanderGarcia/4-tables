@@ -43,21 +43,27 @@ $result = $conn->query($sql);
         <tr>
             <th>ID</th><th>Student</th><th>Workstation</th><th>Start</th><th>End</th><th>Purpose</th><th>Actions</th>
         </tr>
-        <?php while ($row = $result->fetch_assoc()) : ?>
-        <tr>
-            <td><?= $row['bookID']; ?></td>
-            <td><?= htmlspecialchars($row['stuFName'] . ' ' . $row['stuLName']); ?></td>
-            <td><?= htmlspecialchars($row['wsLabRoom'] . ' / ' . $row['wsPCNum']); ?></td>
-            <td><?= htmlspecialchars($row['bookStart']); ?></td>
-            <td><?= htmlspecialchars($row['bookEnd']); ?></td>
-            <td><?= htmlspecialchars($row['purpose']); ?></td>
-            <td>
-                <a href="view.php?id=<?= $row['bookID']; ?>" class="btn btn-view">View</a>
-                <a href="edit.php?id=<?= $row['bookID']; ?>" class="btn btn-edit">Edit</a>
-                <a href="delete.php?id=<?= $row['bookID']; ?>" class="btn btn-delete" onclick="return confirm('Delete this booking?')">Delete</a>
-            </td>
-        </tr>
-        <?php endwhile; ?>
+        <?php if ($result && $result->num_rows > 0) : ?>
+            <?php while ($row = $result->fetch_assoc()) : ?>
+            <tr>
+                <td><?= $row['bookID']; ?></td>
+                <td><?= htmlspecialchars($row['stuFName'] . ' ' . $row['stuLName']); ?></td>
+                <td><?= htmlspecialchars($row['wsLabRoom'] . ' / ' . $row['wsPCNum']); ?></td>
+                <td><?= htmlspecialchars($row['bookStart']); ?></td>
+                <td><?= htmlspecialchars($row['bookEnd']); ?></td>
+                <td><?= htmlspecialchars($row['purpose']); ?></td>
+                <td>
+                    <a href="view.php?id=<?= $row['bookID']; ?>" class="btn btn-view">View</a>
+                    <a href="edit.php?id=<?= $row['bookID']; ?>" class="btn btn-edit">Edit</a>
+                    <a href="delete.php?id=<?= $row['bookID']; ?>" class="btn btn-delete" onclick="return confirm('Delete this booking?')">Delete</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="7" class="no-results">No bookings match your search.</td>
+            </tr>
+        <?php endif; ?>
     </table>
 </div>
 </body>

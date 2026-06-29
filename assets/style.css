@@ -137,6 +137,12 @@ table td {
     text-align: left;
 }
 
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
 form input,
 form textarea,
 form select {
