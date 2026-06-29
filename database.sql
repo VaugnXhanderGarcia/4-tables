@@ -1,24 +1,25 @@
-CREATE DATABASE lablocator;
-
+CREATE DATABASE IF NOT EXISTS lablocator;
 USE lablocator;
 
-CREATE TABLE student (
+CREATE TABLE IF NOT EXISTS student (
     stuID INT AUTO_INCREMENT PRIMARY KEY,
     stuFName VARCHAR(50) NOT NULL,
     stuLName VARCHAR(50) NOT NULL,
-    stuCourse VARCHAR(50) NOT NULL, 
+    stuCourse VARCHAR(50) NOT NULL,
+    stuSpecialization VARCHAR(100),
     stuYear INT NOT NULL
-),
+);
 
-CREATE TABLE workstation (
+CREATE TABLE IF NOT EXISTS workstation (
     wsID INT AUTO_INCREMENT PRIMARY KEY,
     wsLabRoom VARCHAR(50) NOT NULL,
     wsPCNum VARCHAR(50) NOT NULL,
-    wsSoftware VARCHAR(255),   
-    wsStatus VARCHAR(50) NOT NULL
-)
+    wsSoftware VARCHAR(255),
+    wsStatus VARCHAR(50) NOT NULL,
+    wsAge INT DEFAULT 0
+);
 
-CREATE TABLE booking (
+CREATE TABLE IF NOT EXISTS booking (
     bookID INT AUTO_INCREMENT PRIMARY KEY,
     stuID INT NOT NULL,
     wsID INT NOT NULL,
@@ -27,6 +28,4 @@ CREATE TABLE booking (
     purpose TEXT,
     FOREIGN KEY (stuID) REFERENCES student(stuID) ON DELETE CASCADE,
     FOREIGN KEY (wsID)  REFERENCES workstation(wsID) ON DELETE CASCADE
-
-
-)
+);

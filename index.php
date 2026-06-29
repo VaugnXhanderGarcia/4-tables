@@ -6,13 +6,13 @@ requireLogin();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CRUD Home</title>
+    <title>Student Management</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Welcome to the CRUD System</h1>
+    <h1>Welcome to the Student Management System</h1>
     <p>Select a module to manage:</p>
 
     <div class="home-grid">

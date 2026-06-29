@@ -20,6 +20,8 @@
 
         <input type="text" name="stuCourse" placeholder="Course" required>
 
+        <input type="text" name="stuSpecialization" placeholder="Specialization (optional)">
+
         <input type="number" name="stuYear" placeholder="Year Level" required>
 
         <button type="submit" class="btn btn-add">Save Student</button>

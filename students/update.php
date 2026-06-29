@@ -7,19 +7,20 @@ if (
     empty($_POST['stuFName']) ||
     empty($_POST['stuLName']) ||
     empty($_POST['stuCourse']) ||
-    empty($_POST['stuYear'])
+    !isset($_POST['stuYear'])
 ) {
-    die("All fields are required.");
+    die("Required fields are missing.");
 }
 
-$stuID = $_POST['stuID'];
+$stuID = intval($_POST['stuID']);
 $stuFName = trim($_POST['stuFName']);
 $stuLName = trim($_POST['stuLName']);
 $stuCourse = trim($_POST['stuCourse']);
-$stuYear = trim($_POST['stuYear']);
+$stuSpecialization = isset($_POST['stuSpecialization']) ? trim($_POST['stuSpecialization']) : null;
+$stuYear = intval($_POST['stuYear']);
 
 $sql = "UPDATE student
-        SET stuFName = ?, stuLName = ?, stuCourse = ?, stuYear = ?
+        SET stuFName = ?, stuLName = ?, stuCourse = ?, stuSpecialization = ?, stuYear = ?
         WHERE stuID = ?";
 
 $stmt = $conn->prepare($sql);
@@ -29,12 +30,13 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "ssssi",
+    "ssssii",
     $stuFName,
     $stuLName,
     $stuCourse,
+    $stuSpecialization,
     $stuYear,
-    $stuID      
+    $stuID
 );
 
 if ($stmt->execute()) {

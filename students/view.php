@@ -2,11 +2,12 @@
 
 include '../config/database.php';
 
-if (!isset($_GET['stuID'])) {
+// Accept 'id' parameter for consistency with other modules
+if (!isset($_GET['id'])) {
     die("Student ID is missing.");
 }
 
-$stuID = $_GET['stuID'];
+$stuID = intval($_GET['id']);
 
 $sql = "SELECT * FROM student WHERE stuID = ?";
 

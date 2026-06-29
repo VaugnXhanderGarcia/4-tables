@@ -61,6 +61,12 @@ if (!$workstation) {
                value="<?= htmlspecialchars($workstation['wsStatus']); ?>"
                required>
 
+         <input type="number"
+             name="wsAge"
+             value="<?= htmlspecialchars($workstation['wsAge']); ?>"
+             min="0"
+             required>
+
         <button type="submit" class="btn btn-edit">Update Workstation</button>
 
     </form>
