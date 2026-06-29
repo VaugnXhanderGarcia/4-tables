@@ -56,11 +56,6 @@ if (!$student) {
                value="<?= htmlspecialchars($student['stuCourse']); ?>"
                required>
 
-         <input type="text"
-             name="stuSpecialization"
-             value="<?= htmlspecialchars($student['stuSpecialization']); ?>"
-             placeholder="Specialization (optional)">
-
         <input type="number"
                name="stuYear"
                value="<?= htmlspecialchars($student['stuYear']); ?>"

@@ -16,11 +16,10 @@ $stuID = intval($_POST['stuID']);
 $stuFName = trim($_POST['stuFName']);
 $stuLName = trim($_POST['stuLName']);
 $stuCourse = trim($_POST['stuCourse']);
-$stuSpecialization = isset($_POST['stuSpecialization']) ? trim($_POST['stuSpecialization']) : null;
 $stuYear = intval($_POST['stuYear']);
 
 $sql = "UPDATE student
-        SET stuFName = ?, stuLName = ?, stuCourse = ?, stuSpecialization = ?, stuYear = ?
+        SET stuFName = ?, stuLName = ?, stuCourse = ?, stuYear = ?
         WHERE stuID = ?";
 
 $stmt = $conn->prepare($sql);
@@ -30,11 +29,10 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "ssssii",
+    "sssii",
     $stuFName,
     $stuLName,
     $stuCourse,
-    $stuSpecialization,
     $stuYear,
     $stuID
 );

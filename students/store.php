@@ -14,11 +14,10 @@ if (
 $stuFName = trim($_POST['stuFName']);
 $stuLName = trim($_POST['stuLName']);
 $stuCourse = trim($_POST['stuCourse']);
-$stuSpecialization = isset($_POST['stuSpecialization']) ? trim($_POST['stuSpecialization']) : null;
 $stuYear = intval($_POST['stuYear']);
 
-$sql = "INSERT INTO student (stuFName, stuLName, stuCourse, stuSpecialization, stuYear)
-        VALUES (?, ?, ?, ?, ?)";
+$sql = "INSERT INTO student (stuFName, stuLName, stuCourse, stuYear)
+        VALUES (?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
 
@@ -26,7 +25,7 @@ if (!$stmt) {
     die("Prepare failed: " . $conn->error);
 }
 
-$stmt->bind_param("ssssi", $stuFName, $stuLName, $stuCourse, $stuSpecialization, $stuYear);
+$stmt->bind_param("sssi", $stuFName, $stuLName, $stuCourse, $stuYear);
 
 if ($stmt->execute()) {
     header("Location: index.php");

@@ -3,12 +3,12 @@ require_once '../config/auth.php';
 requireLogin();
 include '../config/database.php';
 
-$specialization = isset($_GET['specialization']) ? trim($_GET['specialization']) : '';
+$course = isset($_GET['course']) ? trim($_GET['course']) : '';
 
-if ($specialization !== '') {
-    $sql = "SELECT COUNT(*) as total, stuCourse, stuSpecialization FROM student WHERE stuSpecialization = ? GROUP BY stuCourse, stuSpecialization";
+if ($course !== '') {
+    $sql = "SELECT COUNT(*) as total, stuCourse FROM student WHERE stuCourse = ? GROUP BY stuCourse";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $specialization);
+    $stmt->bind_param('s', $course);
     $stmt->execute();
     $res = $stmt->get_result();
 } else {
@@ -18,7 +18,7 @@ if ($specialization !== '') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Students by Specialization</title>
+    <title>Students by Course</title>
     <link rel="stylesheet" href="../assets/style.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,19 +26,18 @@ if ($specialization !== '') {
 <body>
 <?php include '../includes/nav.php'; ?>
 <div class="container">
-    <h1>Students by Specialization</h1>
+    <h1>Students by Course</h1>
     <form method="get">
-        <input type="text" name="specialization" placeholder="Specialization" value="<?= htmlspecialchars($specialization); ?>">
+        <input type="text" name="course" placeholder="Course" value="<?= htmlspecialchars($course); ?>">
         <button type="submit" class="btn btn-view">Search</button>
     </form>
 
     <?php if ($res): ?>
         <table>
-            <tr><th>Course</th><th>Specialization</th><th>Count</th></tr>
+            <tr><th>Course</th><th>Count</th></tr>
             <?php while ($row = $res->fetch_assoc()): ?>
             <tr>
                 <td><?= htmlspecialchars($row['stuCourse']); ?></td>
-                <td><?= htmlspecialchars($row['stuSpecialization']); ?></td>
                 <td><?= $row['total']; ?></td>
             </tr>
             <?php endwhile; ?>

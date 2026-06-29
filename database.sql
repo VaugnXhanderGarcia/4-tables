@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS student (
     stuFName VARCHAR(50) NOT NULL,
     stuLName VARCHAR(50) NOT NULL,
     stuCourse VARCHAR(50) NOT NULL,
-    stuSpecialization VARCHAR(100),
     stuYear INT NOT NULL
 );
 
