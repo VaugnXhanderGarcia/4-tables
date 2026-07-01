@@ -7,26 +7,57 @@ $wsID = isset($_GET['wsID']) ? intval($_GET['wsID']) : 0;
 $stuID = isset($_GET['stuID']) ? intval($_GET['stuID']) : 0;
 $from = isset($_GET['from']) ? $_GET['from'] : '';
 $to = isset($_GET['to']) ? $_GET['to'] : '';
+$rows = [];
+$searchLabel = '';
 
-$res = null;
 if ($wsID > 0) {
-    $sql = "SELECT COUNT(*) as total, wsID FROM booking WHERE wsID = ? GROUP BY wsID";
+    $sql = "SELECT * FROM booking WHERE wsID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $wsID);
     $stmt->execute();
     $res = $stmt->get_result();
+    $searchLabel = 'Workstation ID: ' . $wsID;
 } elseif ($stuID > 0) {
-    $sql = "SELECT COUNT(*) as total, stuID FROM booking WHERE stuID = ? GROUP BY stuID";
+    $sql = "SELECT * FROM booking WHERE stuID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $stuID);
     $stmt->execute();
     $res = $stmt->get_result();
+    $searchLabel = 'Student ID: ' . $stuID;
 } elseif ($from !== '' && $to !== '') {
-    $sql = "SELECT COUNT(*) as total FROM booking WHERE bookStart BETWEEN ? AND ?";
+    $sql = "SELECT * FROM booking WHERE bookStart BETWEEN ? AND ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ss', $from, $to);
     $stmt->execute();
     $res = $stmt->get_result();
+    $searchLabel = 'Date range';
+} else {
+    $res = null;
+}
+
+if ($res) {
+    while ($row = $res->fetch_assoc()) {
+        $rows[] = $row;
+    }
+}
+
+function renderTable(array $rows): void {
+    if (empty($rows)) {
+        return;
+    }
+    echo '<table><tr>';
+    foreach (array_keys($rows[0]) as $column) {
+        echo '<th>' . htmlspecialchars($column) . '</th>';
+    }
+    echo '</tr>';
+    foreach ($rows as $row) {
+        echo '<tr>';
+        foreach ($row as $value) {
+            echo '<td>' . htmlspecialchars((string)$value) . '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '</table>';
 }
 ?>
 <!DOCTYPE html>
@@ -49,20 +80,14 @@ if ($wsID > 0) {
         <button type="submit" class="btn btn-view">Search</button>
     </form>
 
-    <?php if ($res): ?>
-        <table>
-            <tr><th>Query</th><th>Count</th></tr>
-            <?php while ($row = $res->fetch_assoc()): ?>
-            <tr>
-                <td><?php
-                    if (isset($row['wsID'])) echo 'Workstation ID: ' . $row['wsID'];
-                    elseif (isset($row['stuID'])) echo 'Student ID: ' . $row['stuID'];
-                    else echo 'Date range';
-                ?></td>
-                <td><?= $row['total']; ?></td>
-            </tr>
-            <?php endwhile; ?>
-        </table>
+    <?php if ($searchLabel !== ''): ?>
+        <p><strong>Search:</strong> <?= htmlspecialchars($searchLabel); ?></p>
+        <p><strong>Count:</strong> <?= count($rows); ?></p>
+        <?php if (!empty($rows)): ?>
+            <?php renderTable($rows); ?>
+        <?php else: ?>
+            <p>No bookings found for this query.</p>
+        <?php endif; ?>
     <?php endif; ?>
 
     <br>

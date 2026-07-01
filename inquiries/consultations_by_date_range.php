@@ -3,12 +3,18 @@ require_once '../config/auth.php';
 requireLogin();
 include '../config/database.php';
 
-$from = isset($_GET['from']) ? $conn->real_escape_string($_GET['from']) : '';
-$to = isset($_GET['to']) ? $conn->real_escape_string($_GET['to']) : '';
-$count = 0;
+$from = isset($_GET['from']) ? trim($_GET['from']) : '';
+$to = isset($_GET['to']) ? trim($_GET['to']) : '';
+$rows = [];
 if ($from !== '' && $to !== '') {
-    $res = $conn->query("SELECT COUNT(*) AS total FROM consultation WHERE is_deleted = 0 AND consultDate BETWEEN '$from' AND '$to'");
-    $row = $res->fetch_assoc(); $count = $row['total'];
+    $sql = "SELECT c.*, p.petName, v.vetFName, v.vetLName FROM consultation c LEFT JOIN pet p ON c.petID = p.petID LEFT JOIN veterinarian v ON c.vetID = v.vetID WHERE c.is_deleted = 0 AND c.consultDate BETWEEN ? AND ? ORDER BY c.consultDate DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ss', $from, $to);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    while ($row = $res->fetch_assoc()) {
+        $rows[] = $row;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -28,8 +34,32 @@ if ($from !== '' && $to !== '') {
         <input type="datetime-local" name="to" value="<?= htmlspecialchars($to); ?>">
         <button type="submit" class="btn btn-view">Search</button>
     </form>
-    <?php if ($from!=='' && $to!==''): ?>
-        <p><strong>Count:</strong> <?= $count; ?></p>
+    <?php if ($from !== '' && $to !== ''): ?>
+        <p><strong>Count:</strong> <?= count($rows); ?></p>
+        <?php if (!empty($rows)): ?>
+            <table>
+                <tr>
+                    <th>Consult ID</th>
+                    <th>Date</th>
+                    <th>Pet Name</th>
+                    <th>Vet</th>
+                    <th>Diagnoses</th>
+                    <th>Prescription</th>
+                </tr>
+                <?php foreach ($rows as $row): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['consultID']); ?></td>
+                    <td><?= htmlspecialchars($row['consultDate']); ?></td>
+                    <td><?= htmlspecialchars($row['petName']); ?></td>
+                    <td><?= htmlspecialchars($row['vetFName'] . ' ' . $row['vetLName']); ?></td>
+                    <td><?= htmlspecialchars($row['diagnoses']); ?></td>
+                    <td><?= htmlspecialchars($row['prescription']); ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php else: ?>
+            <p>No consultations found in that date range.</p>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 </body>
