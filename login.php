@@ -14,9 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = 'Invalid username or password.';
 }
 
-if (isLoggedIn()) {
-    header('Location: /Garcia/index.php');
-    exit;
+if (isLoggedIn() && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    $message = 'You are already logged in. Use logout to sign out if you need to switch accounts.';
 }
 ?>
 <!DOCTYPE html>
