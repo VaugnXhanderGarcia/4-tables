@@ -16,7 +16,7 @@ This project is a simple PHP CRUD system with three modules:
 2. Open phpMyAdmin.
 3. Create a database named crud_php.
 4. Import the file database.sql.
-5. Open http://localhost/Garcia/
+5. Open http://localhost/Garcia4/
 
 ## Project folders
 - users: manages user data
