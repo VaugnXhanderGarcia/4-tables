@@ -15,7 +15,7 @@ $sql = "SELECT b.*, s.stuFName, s.stuLName, w.wsLabRoom, w.wsPCNum
         JOIN student s ON b.stuID = s.stuID
         JOIN workstation w ON b.wsID = w.wsID
         $searchSql
-        ORDER BY b.bookID DESC";
+        ORDER BY b.bookID ASC";
 $result = $conn->query($sql);
 ?>
 <!DOCTYPE html>

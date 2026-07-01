@@ -10,7 +10,7 @@ if ($search !== '') {
     $searchSql = "WHERE stuID LIKE '%$keyword%' OR stuFName LIKE '%$keyword%' OR stuLName LIKE '%$keyword%' OR stuCourse LIKE '%$keyword%' OR stuYear LIKE '%$keyword%'";
 }
 
-$result = $conn->query("SELECT * FROM student $searchSql ORDER BY stuID DESC");
+$result = $conn->query("SELECT * FROM student $searchSql ORDER BY stuID ASC");
 ?>
 
 <!DOCTYPE html>

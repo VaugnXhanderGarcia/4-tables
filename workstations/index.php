@@ -10,7 +10,7 @@ if ($search !== '') {
     $searchSql = "WHERE wsID LIKE '%$keyword%' OR wsLabRoom LIKE '%$keyword%' OR wsPCNum LIKE '%$keyword%' OR wsSoftware LIKE '%$keyword%' OR wsStatus LIKE '%$keyword%'";
 }
 
-$result = $conn->query("SELECT * FROM workstation $searchSql ORDER BY wsID DESC");
+$result = $conn->query("SELECT * FROM workstation $searchSql ORDER BY wsID ASC");
 ?>
 
 <!DOCTYPE html>
